@@ -1,0 +1,39 @@
+---
+# tasks file for roles/install-docker-ubuntu
+- name: Install docker dependencies
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - ca-certificates
+      - curl
+- name: Docker keys
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: u=rw,g,o
+
+- name: Docker key permissions
+  ansible.builtin.file:
+    name: /etc/apt/keyrings/docker.asc
+    state: file
+    mode: "a+r"
+
+- name: Add docker repos
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/docker.list
+    line: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu noble stable"
+    state: present
+    create: true
+    mode: u=rw,g,o
+
+- name: Install docker packages
+  ansible.builtin.apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+      - python3-requests
+    state: present
+    update_cache: true
