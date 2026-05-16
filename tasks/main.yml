@@ -25,6 +25,14 @@
     state: present
     create: true
     mode: u=rw,g,o
+- name: make docker config dir
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+- name: copy docker daemon config
+  ansible.builtin.copy:
+    content: "{{ docker_daemon }}"
+    dest: /etc/docker/daemon.json
 
 - name: Install docker packages
   ansible.builtin.apt:

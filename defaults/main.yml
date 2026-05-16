@@ -1,2 +1,7 @@
 ---
 # defaults file for roles/install-docker-ubuntu
+docker_daemon: |
+  {
+  "ipv6": true,
+  "fixed-cidr-v6": "fd23:5f0e:7ddd::/64"
+  }
