@@ -1,2 +1,6 @@
 ---
 # handlers file for roles/install-docker-ubuntu
+- name: restart_docker_service
+  ansible.builtin.systemd_service:
+    name: docker
+    state: restarted

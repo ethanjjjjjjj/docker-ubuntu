@@ -29,10 +29,6 @@
   ansible.builtin.file:
     path: /etc/docker
     state: directory
-- name: copy docker daemon config
-  ansible.builtin.copy:
-    content: "{{ docker_daemon }}"
-    dest: /etc/docker/daemon.json
 
 - name: Install docker packages
   ansible.builtin.apt:
@@ -47,3 +43,9 @@
       - docker-compose
     state: present
     update_cache: true
+
+- name: copy docker daemon config
+  notify: restart_docker_service
+  ansible.builtin.copy:
+    content: "{{ docker_daemon }}"
+    dest: /etc/docker/daemon.json
